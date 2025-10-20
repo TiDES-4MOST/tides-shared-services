@@ -38,13 +38,13 @@ services:
     networks:
       - backend
 
-#volumes:
-  #snid_api_runs:
-  #  external: true
-  #ngsf_api_runs:
-  #  external: true
-  #media_volume:
-  #  external: true
+volumes:
+  snid_api_runs:
+    external: true
+  ngsf_api_runs:
+    external: true
+  media_volume:
+    external: true
 
 networks:
   backend:
