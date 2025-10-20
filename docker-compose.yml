@@ -9,6 +9,7 @@ services:
     volumes:
       - snid_api_runs:/snid_api_runs
       - media_volume:/media
+      - ./spectra:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
@@ -25,6 +26,7 @@ services:
       DJANGO_URL: http://web:8000
     volumes:
       - ngsf_api_runs:/ngsf_api_runs
+      - .spectra:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
