@@ -46,6 +46,3 @@ services:
 #  media_volume:
 #    external: true
 
-#networks:
-#  backend:
-#    external: true
