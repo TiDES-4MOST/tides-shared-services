@@ -116,6 +116,6 @@ COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 USER root
 ENTRYPOINT ["/entrypoint.sh"]
-USER sniduser
+#USER sniduser
 CMD ["uvicorn", "run_snid:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "4"]
 
