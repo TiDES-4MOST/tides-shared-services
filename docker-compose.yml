@@ -37,7 +37,6 @@ services:
       timeout: 2s
     networks:
       - backend
-
 #volumes:
 #  snid_api_runs:
 #    external: true
