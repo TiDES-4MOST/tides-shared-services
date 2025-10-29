@@ -189,7 +189,7 @@ async def _run_snid_task(params: Params):
     df = df.replace([np.inf, -np.inf], np.nan).where(pd.notnull(df), None)
     df = df[['sn', 'typing', 'subtyping', 'lap', 'rlap', 'z', 'zerr', 'age']]
 
-    return {"success": True, "data": {"file_path": f"/snid_api_runs/{params['output_dir']}/test.h5" ,
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/test.h5" ,
                                       "table": df.to_dict(orient='records')[:10]}}
 
 #Remove age_flag, type, grade
