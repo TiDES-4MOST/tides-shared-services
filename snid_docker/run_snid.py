@@ -122,7 +122,7 @@ async def _run_snid_task(params: Params):
     use_type = []
     avoid_type = []
 
-    if not os.path.abspath(params['output_dir']).startsiwth('/snid_api_runs'):
+    if not os.path.abspath(params['output_dir']).startswith('/snid_api_runs'):
         raise ValueError('Invalid output directory')
 
     if len(params['use']) > 0:
