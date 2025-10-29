@@ -113,7 +113,7 @@ async def run_snid(request: Request, params: Params):
 async def _run_snid_task(params: Params):
     request_id = uuid.uuid4()
 
-    if not os.path.abspath(params['output_dir']).startswith('/snid_api_runs'):
+    if not params['output_dir'].startswith('/snid_api_runs'):
         raise ValueError('Invalid output directory')
 
     # Log request info
