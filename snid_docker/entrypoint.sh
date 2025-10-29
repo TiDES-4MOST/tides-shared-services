@@ -8,5 +8,5 @@ chown -R sniduser:snidgroup /media/snid_template_options
 
 # Execute the main container command (uvicorn)
 # exec su -s /bin/bash sniduser -c "$@"
-exec su -s /bin/bash sniduser -c "$*"
+exec su -s /bin/bash sniduser -c "$@"
 
