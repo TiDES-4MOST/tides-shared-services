@@ -28,6 +28,7 @@ class Params(BaseModel):
     alam_high: float | None = 2.0
     alam_low: float | None = -2.0
     alam_interval: float | None = 0.2
+    output_dir: str
 
 app = FastAPI()
 
@@ -97,6 +98,9 @@ async def _run_ngsf_task(params: Params):
     params = params.dict()
     print(params)
 
+    if not os.path.abspath(params['output_dir']).startswith('/ngsf_api_runs'):
+        raise ValueError('Invalid output directory')
+
     if not params['mask_galaxy']:
         params['mask_galaxy'] = 0
     else:
@@ -129,7 +133,7 @@ async def _run_ngsf_task(params: Params):
             --Alam_interval {params['alam_interval']} --how_many_plots 0 -s tmp_save/")
 
     df = pd.read_csv('tmp_save/spectrum.csv')
-    shutil.move("tmp_save/spectrum.csv", '/ngsf_api_runs/spectrum.csv')
+    shutil.move("tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
 
-    return {"sucess": True, "data": {"file_path": "/ngsf_api_runs/spectrum.csv",
+    return {"sucess":True, "data": {"file_path": f"{params['output_dir']}/spectrum.csv",
                                      "table": df.to_dict(orient='records')[:10]}}
