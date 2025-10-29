@@ -35,6 +35,7 @@ class Params(BaseModel):
     avoidsub: object #Done
     usesub: object
     aband: Optional[bool] = False #Done
+    output_dir: str
 
 
 app = FastAPI()
@@ -112,6 +113,9 @@ async def run_snid(request: Request, params: Params):
 async def _run_snid_task(params: Params):
     request_id = uuid.uuid4()
 
+    if not os.path.abspath(params['output_dir']).startswith('/snid_api_runs'):
+        raise ValueError('Invalid output directory')
+
     # Log request info
     print("\n=== SNID Request ===")
     print(f"Request ID: {request_id}")
@@ -176,6 +180,7 @@ async def _run_snid_task(params: Params):
 
     #test = snidres.get_results()
     shutil.move(snidres, '/snid_api_runs/test.h5')
+    shutil.copy2('/snid_api_runs/test.h5', params['output_dir'])
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
     test = pysnid.snid.SNIDReader.from_filename('/snid_api_runs/test.h5')
     df = test.results.copy()
