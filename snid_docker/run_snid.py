@@ -117,7 +117,6 @@ async def _run_snid_task(params: Params):
     print("\n=== SNID Request ===")
     print(f"Request ID: {request_id}")
     print(f"Params: {params.dict()}\n")
-    print(os.getgid())
 
     params = params.dict()
     use_type = []
