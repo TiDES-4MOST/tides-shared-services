@@ -35,6 +35,7 @@ class Params(BaseModel):
     avoidsub: object #Done
     usesub: object
     aband: Optional[bool] = False #Done
+    output_dir: str
 
 
 app = FastAPI()
@@ -121,6 +122,9 @@ async def _run_snid_task(params: Params):
     use_type = []
     avoid_type = []
 
+    if not os.path.abspath(params['output_dir']).startswith('/snid_api_runs'):
+        raise ValueError('Invalid output directory')
+
     if len(params['use']) > 0:
         use_type += params['use']
 
@@ -176,6 +180,7 @@ async def _run_snid_task(params: Params):
 
     #test = snidres.get_results()
     shutil.move(snidres, '/snid_api_runs/test.h5')
+    shutil.copy2('/snid_api_runs/test.h5', params['output_dir'])
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
     test = pysnid.snid.SNIDReader.from_filename('/snid_api_runs/test.h5')
     df = test.results.copy()
@@ -184,7 +189,7 @@ async def _run_snid_task(params: Params):
     df = df.replace([np.inf, -np.inf], np.nan).where(pd.notnull(df), None)
     df = df[['sn', 'typing', 'subtyping', 'lap', 'rlap', 'z', 'zerr', 'age']]
 
-    return {"success": True, "data": {"file_path": "/snid_api_runs/test.h5" ,
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/test.h5" ,
                                       "table": df.to_dict(orient='records')[:10]}}
 
 #Remove age_flag, type, grade

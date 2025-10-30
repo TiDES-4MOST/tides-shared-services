@@ -33,8 +33,9 @@ ENV LD_LIBRARY_PATH=/usr/local/pgplot
 #:${LD_LIBRARY_PATH:-}
 
 # Create a non-root user
-RUN groupadd -r snidgroup && \
-    useradd -r -g snidgroup -m -d /home/sniduser -s /bin/bash sniduser
+RUN groupadd -g 1000 snidgroup && \
+    useradd -u 1000 -r -g snidgroup -m -d /home/sniduser -s /bin/bash sniduser
+
 # Grant sniduser passwordless sudo privileges
 RUN echo 'sniduser ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/sniduser && \
     chmod 0440 /etc/sudoers.d/sniduser
