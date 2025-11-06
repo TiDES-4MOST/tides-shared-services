@@ -57,8 +57,8 @@ async def startup_event():
         if len(subtypes) == 0:
             snid_startup_complete = False
             raise RuntimeError("No Subtypes found, startup may have failed!")
-        os.makedirs('/media/snid_template_options', exist_ok=True)
-        with open('/media/snid_template_options/subtypes.txt', 'w') as f:
+        os.makedirs('/snid_api_runs/snid_template_options', exist_ok=True)
+        with open('/snid_api_runs/snid_template_options/subtypes.txt', 'w') as f:
             f.write("\n".join(subtypes))
             snid_startup_complete = True
 
@@ -70,7 +70,7 @@ async def startup_event():
 
 @app.get("/health")
 async def health():
-    file_path = "/media/snid_template_options/subtypes.txt"
+    file_path = "/snid_api_runs/snid_template_options/subtypes.txt"
     if not snid_startup_complete:
         return JSONResponse(
                 status_code=503,

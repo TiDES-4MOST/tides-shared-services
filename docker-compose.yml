@@ -8,7 +8,6 @@ services:
       DJANGO_URL: http://web:8000
     volumes:
       - snid_api_runs_1:/snid_api_runs
-      - media_volume_1:/media
       - spectra_volume:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
