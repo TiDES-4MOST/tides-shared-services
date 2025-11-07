@@ -2,8 +2,8 @@ services:
   snid_api:
     build: ./snid_docker/
     cpus: 2
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
@@ -21,8 +21,8 @@ services:
   ngsf_api:
     build: ./ngsf_docker/
     cpus: 2
-    expose:
-      - "8000"
+    ports:
+      - "8001:8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
