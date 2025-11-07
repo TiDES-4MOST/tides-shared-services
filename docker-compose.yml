@@ -1,14 +1,14 @@
 services:
   snid_api:
     build: ./snid_docker/
-    cpus: 4
+    cpus: 2
     expose:
       - "8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
-      - snid_api_runs_1:/snid_api_runs
-      - spectra_volume:/data/spectra:ro
+      - /mnt/api_results/snid_api_runs:/snid_api_runs
+      #- spectra_volume:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
@@ -20,13 +20,13 @@ services:
 
   ngsf_api:
     build: ./ngsf_docker/
-    cpus: 4
+    cpus: 2
     expose:
       - "8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
-      - ngsf_api_runs_1:/ngsf_api_runs
+      - /mnt/api_results/ngsf_api_runs:/ngsf_api_runs
       - spectra_volume:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
