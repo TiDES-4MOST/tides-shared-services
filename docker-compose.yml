@@ -15,8 +15,8 @@ services:
       retries: 10
       start_period: 10s
       timeout: 2s
-    networks:
-      - backend
+    #networks:
+    #  - backend
 
   ngsf_api:
     build: ./ngsf_docker/
@@ -34,8 +34,8 @@ services:
       retries: 10
       start_period: 10s
       timeout: 2s
-    networks:
-      - backend
+    #networks:
+    #  - backend
 #volumes:
 #  snid_api_runs:
 #    external: true
