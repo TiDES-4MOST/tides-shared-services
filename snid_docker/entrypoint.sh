@@ -1,12 +1,10 @@
 #!/bin/bash
 set -e
 
-# Fix ownership of mounted volume
-chown -R sniduser:snidgroup /snid_api_runs
+# Ensure required directories exist (permissions already correct)
 mkdir -p /media/snid_template_options
-chown -R sniduser:snidgroup /media/snid_template_options
 
-# Execute the main container command (uvicorn)
-# exec su -s /bin/bash sniduser -c "$@"
+# Start the service
 exec su -s /bin/bash sniduser -c "$*"
+
 
