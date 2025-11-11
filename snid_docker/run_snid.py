@@ -150,9 +150,9 @@ async def _run_snid_task(params: Params):
     except IORegistryError:
         file_table = Table.read(params['spectrum'], format='ascii')
     print(file_table)
-
+    hdult = file_table
     #read fits spec
-    hdult =  Table.read(params['spectrum'], format='fits')
+    #hdult =  Table.read(params['spectrum'], format='fits')
     wl=hdult['WAVE'][0]
     fl=hdult['FLUX'][0]
 
