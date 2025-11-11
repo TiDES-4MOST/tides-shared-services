@@ -153,8 +153,14 @@ async def _run_snid_task(params: Params):
     hdult = file_table
     #read fits spec
     #hdult =  Table.read(params['spectrum'], format='fits')
-    wl=hdult['WAVE'][0]
-    fl=hdult['FLUX'][0]
+    try:
+        wl=hdult['WAVE'][0]
+    except KeyError:
+        wl=hdult['Wavelength']
+    try:
+        fl=hdult['FLUX'][0]
+    except KeyError:
+        fl=hdult['Flux'][0]
 
     # create a Spectrum1D object for specutils
     spec = Spectrum1D(spectral_axis=wl* u.AA , flux=fl* u.Unit('erg cm-2 s-1 AA-1') )
