@@ -156,11 +156,11 @@ async def _run_snid_task(params: Params):
     try:
         wl=hdult['WAVE'][0]
     except KeyError:
-        wl=hdult['Wavelength'][0]
+        wl=hdult['Wavelength']
     try:
         fl=hdult['FLUX'][0]
     except KeyError:
-        fl=hdult['Flux'][0]
+        fl=hdult['Flux']
 
     # create a Spectrum1D object for specutils
     spec = Spectrum1D(spectral_axis=wl* u.AA , flux=fl* u.Unit('erg cm-2 s-1 AA-1') )
