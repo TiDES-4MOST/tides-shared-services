@@ -1,3 +1,4 @@
+from astropy.io.registry import IORegistryError
 from astropy.table import Table
 from specutils import Spectrum1D
 from specutils.manipulation import FluxConservingResampler
@@ -144,8 +145,10 @@ async def _run_snid_task(params: Params):
         avoid_type = None
 
     file_spec_binned_path='/home/sniduser/snid-5.0/examples'
-
-    file_table = Table.read(params['spectrum'])
+    try:
+        file_table = Table.read(params['spectrum'])
+    except IORegistryError:
+        file_table = Table.read(params['spectrum'], format='ascii')
     print(file_table)
 
     #read fits spec
