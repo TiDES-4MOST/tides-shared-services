@@ -156,7 +156,7 @@ async def _run_snid_task(params: Params):
     try:
         wl=hdult['WAVE'][0]
     except KeyError:
-        wl=hdult['Wavelength']
+        wl=hdult['Wavelength'][0]
     try:
         fl=hdult['FLUX'][0]
     except KeyError:
