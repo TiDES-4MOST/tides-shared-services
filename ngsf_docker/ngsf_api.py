@@ -119,8 +119,14 @@ async def _run_ngsf_task(params: Params):
         hdult = Table.read(params['spectrum'], format='fits')
     except OSError:
         hdult = Table.read(params['spectrum'], format='ascii')
-    wl = hdult['WAVE'][0]
-    fl = hdult['FLUX'][0]
+    try:
+        wl = hdult['WAVE'][0]
+    except KeyError:
+        wl=hdult['Wavelength']
+    try:
+        fl = hdult['FLUX'][0]
+    except KeyError:
+        fl = hdult['Flux']
 
     to_dat = np.column_stack([wl, fl])
     np.savetxt(f"{move_path}spectrum.ascii",
