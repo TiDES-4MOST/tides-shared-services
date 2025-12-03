@@ -1,3 +1,4 @@
 ngsf
 fastapi[standard]
 pydantic
+numpy==1.25
