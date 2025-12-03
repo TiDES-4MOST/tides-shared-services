@@ -115,7 +115,10 @@ async def _run_ngsf_task(params: Params):
         os.mkdir('./tmp_save/')
 
     move_path='/'
-    hdult = Table.read(params['spectrum'], format='fits')
+    try:
+        hdult = Table.read(params['spectrum'], format='fits')
+    except OSError:
+        hdult = Table.read(params['spectrum'], format='ascii')
     wl = hdult['WAVE'][0]
     fl = hdult['FLUX'][0]
 
