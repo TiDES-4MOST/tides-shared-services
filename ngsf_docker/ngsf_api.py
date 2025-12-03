@@ -143,6 +143,6 @@ async def _run_ngsf_task(params: Params):
 
     df = pd.read_csv('./tmp_save/spectrum.csv')
     shutil.move("./tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
-
+    print(df)
     return {"success":True, "data": {"file_path": f"{params['output_dir']}/spectrum.csv",
                                      "table": df.to_dict(orient='records')[:10]}}
