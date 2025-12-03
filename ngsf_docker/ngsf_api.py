@@ -139,7 +139,7 @@ async def _run_ngsf_task(params: Params):
             --mask_telluric {params['mask_telluric']} \
             --epoch_high {params['epoch_high']} --epoch_low {params['epoch_low']} \
             --Alam_high {params['alam_high']} --Alam_low {params['alam_low']} \
-            --Alam_interval {params['alam_interval']} --how_many_plots 0 -s tmp_save/")
+            --Alam_interval {params['alam_interval']} --how_many_plots 0 -s ./tmp_save/")
 
     df = pd.read_csv('./tmp_save/spectrum.csv')
     shutil.move("./tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
