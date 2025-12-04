@@ -18,7 +18,7 @@ class Params(BaseModel):
     z_min: float | None = 0.0
     z_max: float | None = 0.1
     z_int: float | None = 0.01
-    resolution: float | None = 10
+    resolution: float | None = 20
     lower_lam: float | None = 0.00
     upper_lam: float | None = 0.0
     mask_galaxy: bool | None = True
