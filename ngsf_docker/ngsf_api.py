@@ -134,7 +134,7 @@ async def _run_ngsf_task(params: Params):
 
     os.system(f"python run_ngsf.py /spectrum.ascii -z {params['z']} \
             --z_range_begin {params['z_min']} --z_range_end {params['z_max']} \
-            --z_int {params['z_int']} --resolution {params['resolution']} \
+            --z_int {params['z_int']} -r {params['resolution']} \
             --lower_lam {params['lower_lam']}  --upper_lam {params['upper_lam']} \
             --mask_galaxy {params['mask_galaxy']} \
             --mask_telluric {params['mask_telluric']} \
