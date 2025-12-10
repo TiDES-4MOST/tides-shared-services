@@ -174,12 +174,11 @@ async def _run_snid_task(params: Params):
 
     # make an ascii file of the binned spectrum to run pysnid
     data_spec = np.column_stack([fl_smooth.spectral_axis.value, fl_smooth.flux.value])
-
-    binned_file_name = f"{file_spec_binned_path}{np.random.random_integers(1000)}_binned.ascii"
-    np.savetxt(binned_file_name, data_spec, fmt=['%.2f','%.4e'])
+    np.savetxt(f"{file_spec_binned_path}/binned.ascii",
+               data_spec, fmt=['%.2f','%.4e'])
 
     #run pysnid
-    snidres = pysnid.run_snid(binned_file_name,
+    snidres = pysnid.run_snid(f"{file_spec_binned_path}/binned.ascii",
                               get_results=False,lbda_range=
                               [params['wmin'],params['wmax']], redshift_bounds=
                               [params['zmin'],params['zmax']], phase_range=
@@ -189,20 +188,17 @@ async def _run_snid_task(params: Params):
                               aband=params['aband'])
 
     #test = snidres.get_results()
-    move_name = "np.random.random_integers(1000).h5"
-    shutil.move(snidres, f"/snid_api_runs{move_name}")
-    shutil.copy2(f"/snid_api_runs{move_name}', params['output_dir']")
+    shutil.move(snidres, '/snid_api_runs/test.h5')
+    shutil.copy2('/snid_api_runs/test.h5', params['output_dir'])
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
-    test = pysnid.snid.SNIDReader.from_filename(f"/snid_api_runs{move_name}")
+    test = pysnid.snid.SNIDReader.from_filename('/snid_api_runs/test.h5')
     df = test.results.copy()
-
-    os.remove(f"/snid_api_runs{move_name}")
 
     # Replace non-finite values with None
     df = df.replace([np.inf, -np.inf], np.nan).where(pd.notnull(df), None)
     df = df[['sn', 'typing', 'subtyping', 'lap', 'rlap', 'z', 'zerr', 'age']]
 
-    return {"success": True, "data": {"file_path": f"{params['output_dir']}/{params['spectrum']}.h5",
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/test.h5" ,
                                       "table": df.to_dict(orient='records')[:10]}}
 
 #Remove age_flag, type, grade
