@@ -189,13 +189,14 @@ async def _run_snid_task(params: Params):
                               aband=params['aband'])
 
     #test = snidres.get_results()
-    shutil.move(snidres, f"/snid_api_runs/{params['spectrum']}.h5")
-    shutil.copy2(f"/snid_api_runs/{params['spectrum']}.h5', params['output_dir']")
+    move_name = "np.random.random_integers(1000).h5"
+    shutil.move(snidres, f"/snid_api_runs{move_name}")
+    shutil.copy2(f"/snid_api_runs{move_name}', params['output_dir']")
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
-    test = pysnid.snid.SNIDReader.from_filename(f"/snid_api_runs/{params['spectrum']}.h5")
+    test = pysnid.snid.SNIDReader.from_filename(f"/snid_api_runs{move_name}")
     df = test.results.copy()
 
-    os.remove(f"/snid_api_runs/{params['spectrum']}.h5")
+    os.remove(f"/snid_api_runs{move_name}")
 
     # Replace non-finite values with None
     df = df.replace([np.inf, -np.inf], np.nan).where(pd.notnull(df), None)
