@@ -143,7 +143,7 @@ async def _run_ngsf_task(params: Params):
             --Alam_interval {params['alam_interval']} --how_many_plots 0 -s ./tmp_save/")
 
     df = pd.read_csv('./tmp_save/spectrum.csv')
-    shutil.move("./tmp_save/spectrum.csv", f"{params['output_dir']}/{params['spectrum']}_spectrum.csv")
+    shutil.move("./tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
 
-    return {"success": True, "data": {"file_path": f"{params['output_dir']}/{params['spectrum']}spectrum.csv",
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/spectrum.csv",
                                      "table": df.to_dict(orient='records')[:10]}}
