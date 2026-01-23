@@ -1,42 +1,41 @@
 services:
   snid_api:
     build: ./snid_docker/
-    cpus: 4
-    expose:
-      - "8000"
+    cpus: 2
+    ports:
+      - "8000:8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
-      - snid_api_runs_1:/snid_api_runs
-      - media_volume_1:/media
-      - spectra_volume:/data/spectra:ro
+      - /mnt/api_results/snid_api_runs:/snid_api_runs
+      - /mnt/data/spectra:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
       retries: 10
       start_period: 10s
       timeout: 2s
-    networks:
-      - backend
+    #networks:
+    #  - backend
 
   ngsf_api:
     build: ./ngsf_docker/
-    cpus: 4
-    expose:
-      - "8000"
+    cpus: 2
+    ports:
+      - "8001:8000"
     environment:
       DJANGO_URL: http://web:8000
     volumes:
-      - ngsf_api_runs_1:/ngsf_api_runs
-      - spectra_volume:/data/spectra:ro
+      - /mnt/api_results/ngsf_api_runs:/ngsf_api_runs
+      - /mnt/data/spectra:/data/spectra:ro
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 5s
       retries: 10
       start_period: 10s
       timeout: 2s
-    networks:
-      - backend
+    #networks:
+    #  - backend
 #volumes:
 #  snid_api_runs:
 #    external: true

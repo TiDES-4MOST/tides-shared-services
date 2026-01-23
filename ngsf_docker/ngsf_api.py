@@ -18,7 +18,7 @@ class Params(BaseModel):
     z_min: float | None = 0.0
     z_max: float | None = 0.1
     z_int: float | None = 0.01
-    resolution: float | None = 10
+    resolution: float | None = 20
     lower_lam: float | None = 0.00
     upper_lam: float | None = 0.0
     mask_galaxy: bool | None = True
@@ -115,9 +115,18 @@ async def _run_ngsf_task(params: Params):
         os.mkdir('./tmp_save/')
 
     move_path='/'
-    hdult = Table.read(params['spectrum'], format='fits')
-    wl = hdult['WAVE'][0]
-    fl = hdult['FLUX'][0]
+    try:
+        hdult = Table.read(params['spectrum'], format='fits')
+    except OSError:
+        hdult = Table.read(params['spectrum'], format='ascii')
+    try:
+        wl = hdult['WAVE'][0]
+    except KeyError:
+        wl=hdult['Wavelength']
+    try:
+        fl = hdult['FLUX'][0]
+    except KeyError:
+        fl = hdult['Flux']
 
     to_dat = np.column_stack([wl, fl])
     np.savetxt(f"{move_path}spectrum.ascii",
@@ -125,15 +134,16 @@ async def _run_ngsf_task(params: Params):
 
     os.system(f"python run_ngsf.py /spectrum.ascii -z {params['z']} \
             --z_range_begin {params['z_min']} --z_range_end {params['z_max']} \
-            --z_int {params['z_int']} --lower_lam {params['lower_lam']} \
-            --upper_lam {params['upper_lam']} --mask_galaxy {params['mask_galaxy']} \
+            --z_int {params['z_int']} -r {params['resolution']} \
+            --lower_lam {params['lower_lam']}  --upper_lam {params['upper_lam']} \
+            --mask_galaxy {params['mask_galaxy']} \
             --mask_telluric {params['mask_telluric']} \
             --epoch_high {params['epoch_high']} --epoch_low {params['epoch_low']} \
             --Alam_high {params['alam_high']} --Alam_low {params['alam_low']} \
-            --Alam_interval {params['alam_interval']} --how_many_plots 0 -s tmp_save/")
+            --Alam_interval {params['alam_interval']} --how_many_plots 0 -s ./tmp_save/")
 
-    df = pd.read_csv('tmp_save/spectrum.csv')
-    shutil.move("tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
+    df = pd.read_csv('./tmp_save/spectrum.csv')
+    shutil.move("./tmp_save/spectrum.csv", f"{params['output_dir']}/spectrum.csv")
 
-    return {"sucess":True, "data": {"file_path": f"{params['output_dir']}/spectrum.csv",
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/spectrum.csv",
                                      "table": df.to_dict(orient='records')[:10]}}

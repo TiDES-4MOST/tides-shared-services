@@ -1,3 +1,4 @@
+from astropy.io.registry import IORegistryError
 from astropy.table import Table
 from specutils import Spectrum1D
 from specutils.manipulation import FluxConservingResampler
@@ -57,8 +58,8 @@ async def startup_event():
         if len(subtypes) == 0:
             snid_startup_complete = False
             raise RuntimeError("No Subtypes found, startup may have failed!")
-        os.makedirs('/media/snid_template_options', exist_ok=True)
-        with open('/media/snid_template_options/subtypes.txt', 'w') as f:
+        os.makedirs('/snid_api_runs/snid_template_options', exist_ok=True)
+        with open('/snid_api_runs/snid_template_options/subtypes.txt', 'w') as f:
             f.write("\n".join(subtypes))
             snid_startup_complete = True
 
@@ -70,7 +71,7 @@ async def startup_event():
 
 @app.get("/health")
 async def health():
-    file_path = "/media/snid_template_options/subtypes.txt"
+    file_path = "/snid_api_runs/snid_template_options/subtypes.txt"
     if not snid_startup_complete:
         return JSONResponse(
                 status_code=503,
@@ -144,14 +145,22 @@ async def _run_snid_task(params: Params):
         avoid_type = None
 
     file_spec_binned_path='/home/sniduser/snid-5.0/examples'
-
-    file_table = Table.read(params['spectrum'])
+    try:
+        file_table = Table.read(params['spectrum'])
+    except IORegistryError:
+        file_table = Table.read(params['spectrum'], format='ascii')
     print(file_table)
-
+    hdult = file_table
     #read fits spec
-    hdult =  Table.read(params['spectrum'], format='fits')
-    wl=hdult['WAVE'][0]
-    fl=hdult['FLUX'][0]
+    #hdult =  Table.read(params['spectrum'], format='fits')
+    try:
+        wl=hdult['WAVE'][0]
+    except KeyError:
+        wl=hdult['Wavelength']
+    try:
+        fl=hdult['FLUX'][0]
+    except KeyError:
+        fl=hdult['Flux']
 
     # create a Spectrum1D object for specutils
     spec = Spectrum1D(spectral_axis=wl* u.AA , flux=fl* u.Unit('erg cm-2 s-1 AA-1') )
