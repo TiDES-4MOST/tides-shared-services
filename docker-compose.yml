@@ -15,8 +15,6 @@ services:
       retries: 10
       start_period: 10s
       timeout: 2s
-    #networks:
-    #  - backend
 
   ngsf_api:
     build: ./ngsf_docker/
@@ -34,8 +32,24 @@ services:
       retries: 10
       start_period: 10s
       timeout: 2s
-    #networks:
-    #  - backend
+
+  dash_api:
+    build: ./dash_docker/
+    cpus: 2
+    ports:
+      - "8002:8000"
+    environment:
+      DJANGO_URL: http://web:8000
+    volumes:
+      - /mnt/api_results/dash_api_runs:/dash_api_runs
+      - /mnt/data/spectra:/data/spectra:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 5s
+      retries: 10
+      start_period: 10s
+      timeout: 2s
+      
 #volumes:
 #  snid_api_runs:
 #    external: true

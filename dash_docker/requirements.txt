@@ -1,0 +1,3 @@
+astrodash
+fastapi[standard]
+pydantic
