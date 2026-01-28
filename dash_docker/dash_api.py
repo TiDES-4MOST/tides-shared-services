@@ -66,7 +66,7 @@ async def run_dash(params: Params):
 async def _run_dash_task(params: Params):
     params = params.dict()
 
-    if not os.path.abspath(params['output_dir']).startwith('/dash_api_runs'):
+    if not os.path.abspath(params['output_dir']).startswith('/dash_api_runs'):
         raise ValueError('Invalid output directory')
 
     classification = astrodash.Classify([params['spectrum']], params['redshift'],
