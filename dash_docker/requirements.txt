@@ -1,3 +1,4 @@
 astrodash
 fastapi[standard]
 pydantic
+pandas
