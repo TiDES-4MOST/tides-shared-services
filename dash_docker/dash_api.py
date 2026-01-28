@@ -1,6 +1,5 @@
 import os
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import pandas as pd
 import logging
@@ -74,6 +73,6 @@ async def _run_dash_task(params: Params):
                                         params['smooth'], params['rlap'])
 
     classification.list_best_matches(n=100,
-                                     saveFilename=f"{params['output_dir']}Dash_matches.txt")
+                                     saveFilename=f"{params['output_dir']}/dash_matches.txt")
 
-    return {"success": True, "data": {"file_path": f"{params['output_dir']}/"}} #TODO set output dir
+    return {"success": True, "data": {"file_path": f"{params['output_dir']}/dash_matches.txt"}}
