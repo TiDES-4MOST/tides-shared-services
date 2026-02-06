@@ -151,6 +151,14 @@ async def _run_snid_task(params: Params):
         file_table = Table.read(params['spectrum'], format='ascii')
     print(file_table)
     hdult = file_table
+
+    remove = []
+    n = 0
+    for row in hdult.iterrows():
+        if np.isnan(row[1]):
+            remove.append(n)
+        n+=1
+    _ = hdult.remove_rows(remove)
     #read fits spec
     #hdult =  Table.read(params['spectrum'], format='fits')
     try:
