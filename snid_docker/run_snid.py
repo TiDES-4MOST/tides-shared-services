@@ -200,7 +200,7 @@ async def _run_snid_task(params: Params):
     #shutil.copy2('/snid_api_runs/test.h5', params['output_dir'])
     shutil.move(snidres, f"{params['output_dir']}/test.h5")
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
-    test = pysnid.snid.SNIDReader.from_filename("{params['output_dir']}/test.h5")
+    test = pysnid.snid.SNIDReader.from_filename(f"{params['output_dir']}/test.h5")
     df = test.results.copy()
 
     # Replace non-finite values with None
