@@ -25,8 +25,8 @@ class Params(BaseModel):
     spectrum: str
     wmin: Optional[float] = 3500 ##Done
     wmax: Optional[float] = 9500 ##Done
-    zmin: Optional[float] = 0 ##Done
-    zmax: Optional[float] = 1.2 ##Done
+    zmin: Optional[float] ##Done
+    zmax: Optional[float] ##Done
     zfix: Optional[float]
     emclip: Optional[float] = None #Done
     emwid: Optional[float] = 40 #DONE
