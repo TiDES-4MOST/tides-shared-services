@@ -25,9 +25,9 @@ class Params(BaseModel):
     spectrum: str
     wmin: Optional[float] = 3500 ##Done
     wmax: Optional[float] = 9500 ##Done
-    zmin: Optional[float] ##Done
-    zmax: Optional[float] ##Done
-    zfix: Optional[float]
+    zmin: Optional[float] = None ##Done
+    zmax: Optional[float] = None##Done
+    zfix: Optional[float] = None
     emclip: Optional[float] = None #Done
     emwid: Optional[float] = 40 #DONE
     agemin: Optional[float] = -90 #Done
@@ -187,7 +187,8 @@ async def _run_snid_task(params: Params):
                data_spec, fmt=['%.2f','%.4e'])
 
     #run pysnid
-    snidres = pysnid.run_snid(f"{file_spec_binned_path}/binned.ascii",
+    if (params['zmin'] is not None and params['zmax'] is not None and params['zfix'] is None):
+        snidres = pysnid.run_snid(f"{file_spec_binned_path}/binned.ascii",
                               get_results=False,lbda_range=
                               [params['wmin'],params['wmax']], redshift_bounds=
                               [params['zmin'],params['zmax']], phase_range=
@@ -195,6 +196,17 @@ async def _run_snid_task(params: Params):
                               params['emwid'], usetype = use_type, avoidtype=
                               avoid_type, emclip=params['emclip'],
                               aband=params['aband'])
+    elif params['zfix'] is not None:
+         snidres = pysnid.run_snid(f"{file_spec_binned_path}/binned.ascii",
+                              get_results=False,lbda_range=
+                              [params['wmin'],params['wmax']], forcez=
+                              params['zfix'], phase_range=
+                              [params['agemin'], params['agemax']], emwid=
+                              params['emwid'], usetype = use_type, avoidtype=
+                              avoid_type, emclip=params['emclip'],
+                              aband=params['aband'])
+    else:
+        return {"success": False, "data": {"message":"Conflict in submitted redshif options. Check your submission before trying again"}}
 
     try:
         shutil.move(snidres, f"{params['output_dir']}/test.h5")
