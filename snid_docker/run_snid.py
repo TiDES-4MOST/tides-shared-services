@@ -195,10 +195,10 @@ async def _run_snid_task(params: Params):
                               avoid_type, emclip=params['emclip'],
                               aband=params['aband'])
 
-    #test = snidres.get_results()
-    #shutil.move(snidres, '/snid_api_runs/test.h5')
-    #shutil.copy2('/snid_api_runs/test.h5', params['output_dir'])
-    shutil.move(snidres, f"{params['output_dir']}/test.h5")
+    try:
+        shutil.move(snidres, f"{params['output_dir']}/test.h5")
+    except TypeError:
+        return {"success": False, "data": {"message": "SNID failed"}}
     #this will create a file named file_spec_binned_ascii+'_snid.h5'
     test = pysnid.snid.SNIDReader.from_filename(f"{params['output_dir']}/test.h5")
     df = test.results.copy()
