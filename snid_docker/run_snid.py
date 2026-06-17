@@ -27,6 +27,7 @@ class Params(BaseModel):
     wmax: Optional[float] = 9500 ##Done
     zmin: Optional[float] = 0 ##Done
     zmax: Optional[float] = 1.2 ##Done
+    zfix: Optional[float] = 1.0
     emclip: Optional[float] = None #Done
     emwid: Optional[float] = 40 #DONE
     agemin: Optional[float] = -90 #Done
